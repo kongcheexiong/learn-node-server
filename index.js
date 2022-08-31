@@ -1,38 +1,32 @@
 require("dotenv").config();
+const bodyParser = require('body-parser')
 const express = require("express");
 const app = express();
 
-const cors = require('cors')
-const dbConnect = require('./src/db')
+const cors = require("cors");
+const dbConnect = require("./src/db");
 
-const route = require('./src/routes/index.route')
+const route = require("./src/routes/index.route");
+const { json } = require("express");
 
+app.use(cors());
+// parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: false }))
 
+// parse application/json
+app.use(bodyParser.json())
 
 const port = process.env.PORT || 3000;
-app.use(cors())
-//connect database
-dbConnect()
-// app.get("/user",verify, (req, res) => {
-//     console.log('request')
-//   return res.status(200).json({ message: "hello" });
-// });
 
+const startServer = async () => {
+  //connect database
+  await dbConnect();
 
+  // use route middleware
+  await app.use("/api", route);
 
-app.post("/post/user",  (req, res) => {
-  const id = req.query.docId;
-  const username = req.body.name;
-  const surname = req.body.surname;
+  await app.listen(port, () => console.log(`server running at ${port}`));
+};
 
-  // insert to database
-
-   res.status(200).json({
-    message: "register successfully",
-    status: "200",
-  });
-});
-
-app.use('/api',route)
-
-app.listen(port, () => console.log(`server running at ${port}`));
+// start server 
+startServer()
