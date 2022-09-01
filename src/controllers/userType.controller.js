@@ -3,8 +3,7 @@ const UserType = require("../models/userType.model");
 /// insert user type
 const insertUserType = async (req, res) => {
   const _typeName = await req.query.typeName;
- // console.log(typeof req.query)
-
+  // console.log(typeof req.query)
   // create instance
   const type = new UserType({
     typeName: _typeName,

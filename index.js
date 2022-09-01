@@ -6,27 +6,33 @@ const app = express();
 const cors = require("cors");
 const dbConnect = require("./src/db");
 
-const route = require("./src/routes/index.route");
+const routes = require("./src/routes/index.route");
 const { json } = require("express");
-
 app.use(cors());
+
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }))
-
 // parse application/json
 app.use(bodyParser.json())
-
 const port = process.env.PORT || 3000;
 
-const startServer = async () => {
-  //connect database
-  await dbConnect();
+ const startServer = async () => {
+   //connect database
+   await dbConnect()
+   // use route middleware
+   await app.use("/api", routes)
+   await app.listen(port, () => console.log(`server running at ${port}`));
 
-  // use route middleware
-  await app.use("/api", route);
+ }
+ // start server 
+ startServer()
 
-  await app.listen(port, () => console.log(`server running at ${port}`));
-};
 
-// start server 
-startServer()
+
+ //connect database
+//   dbConnect();
+
+//  // use route middleware
+//   app.use("/api", route);
+
+//   app.listen(port, () => console.log(`server running at ${port}`));

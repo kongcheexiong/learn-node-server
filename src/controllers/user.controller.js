@@ -5,16 +5,21 @@ const salt = process.env.bcrypt_salt_string || 10
 //insert user
 const InsertUser = async (req, res) => {
     const image = req.file.filename
+
+    console.log("file===>",req.file)
+    console.log("body===>",req.body)
     const hash_password = await bcrypt.hash(req.body.password, salt)
+    
   try {
     if (req.body) {
-      const user = new User({...req.body, image:image, password: hash_password });
+      const user = new User({...req.body, image: req.file.filename, password: hash_password 
+    });
       await user.save((err, result) => {
         if (err) {
           console.log(err);
           return;
         }
-        console.log(result);
+        //console.log('======>',result);
         return res.status(200).json({
           message: "create user successfully",
           status: "200",

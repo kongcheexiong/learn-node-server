@@ -1,3 +1,4 @@
+const { query } = require("express");
 const multer = require("multer");
 const upload = multer({ dest: "uploads/" });
 
@@ -8,20 +9,16 @@ const uploadFiles = (req, res) => {
 };
 
 // get image
-const showImage = (req, res, next) => {
+const showImage = (req, res) => {
+    // option
   var options = {
-    root: "images",  //path.join(__dirname, "../../images"),
-    dotfiles: "deny",
-    headers: {
-      "x-timestamp": Date.now(),
-      "x-sent": true,
-    },
+    root: "./images",  //floder where u store your images
   };
+  var fileName = req.query.name; // image name
 
-  var fileName = req.params.name;
   res.sendFile(fileName, options, function (err) {
     if (err) {
-      next(err);
+      console.log(err)
     } else {
       console.log("Sent:", fileName);
     }
