@@ -19,11 +19,10 @@ route.post("/userType/insert", userType.insertUserType);
 
 /// user route
 route.post("/user/insert",upload.single("image"), userController.InsertUser); // upload image & save image name to db
+route.post("/login", userController.userLogin);
 
 // route.post("/user/insert",upload.single("image")); 
 // route.post("/user/insert",userController.InsertUser); 
-
-route.post("/user/login",  userController.userLogin);
 
 //image route
 //route.post("/upload/images", upload.single("image") ,uploadFiles.uploadFiles) // upload image without save image name to database
