@@ -5,7 +5,7 @@ const multer = require('multer')
 //const upload = require('../middlewares/image.middleware')
 const upload = require('../middlewares/image.middleware')
 
-const uploadImage = require('../middlewares/uploadimage.middleware')
+// const uploadImage = require('../middlewares/uploadimage.middleware')
 
 
 
@@ -26,12 +26,12 @@ route.post("/user/insert",upload.single("image"), userController.InsertUser); //
 route.post("/user/login",  userController.userLogin);
 
 //image route
-route.post("/upload/images", upload.single("image") ,uploadFiles.uploadFiles) // upload image without save image name to database
+//route.post("/upload/images", upload.single("image") ,uploadFiles.uploadFiles) // upload image without save image name to database
 route.get("/image/",uploadFiles.showImage) // show image
 
-route.post("/upload", uploadImage.single("image"), (req,res)=>{
-    res.send({message: 'success'})
-} )
+// route.post("/upload", uploadImage.single("image"), (req,res)=>{
+//     res.send({message: 'success'})
+// } )
 
 
 
