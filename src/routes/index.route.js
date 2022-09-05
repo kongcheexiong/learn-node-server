@@ -8,8 +8,8 @@ const upload = require('../middlewares/image.middleware')
 // const uploadImage = require('../middlewares/uploadimage.middleware')
 
 
-
 const uploadFiles = require('../controllers/image.controller')
+const verifyToken = require('../middlewares/verifyToken.middleware')
 
 const route = require('express').Router()
 
@@ -32,7 +32,7 @@ route.get("/image/",uploadFiles.showImage) // show image
 //     res.send({message: 'success'})
 // } )
 
-
+route.get("/all-user", verifyToken, userController.getAlluser)
 
 
 module.exports = route

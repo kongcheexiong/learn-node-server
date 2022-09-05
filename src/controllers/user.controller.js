@@ -47,6 +47,26 @@ const InsertUser = async (req, res) => {
     console.log(error);
   }
 };
+//update
+const updateUser = async () => {
+  // const query = {
+  //   : req.body.id
+  // }
+  await User.findByIdAndUpdate(req.body._id, {
+    firstName: req.body.firstName,
+  }).exec((err, result) => {
+    if (err) {
+      return res.status(400).json({
+        message: "there is an error",
+      });
+    }
+    return res.status(200).json({
+      message: "insert successfully",
+      data: result,
+    });
+  });
+};
+//delete
 
 // user login
 const userLogin = async (req, res) => {
@@ -73,6 +93,7 @@ const userLogin = async (req, res) => {
       return res.status(404).json({
         message: "user password is not correct",
         status: 404,
+     
       });
     }
     // use jwt to encode data => token
@@ -82,7 +103,7 @@ const userLogin = async (req, res) => {
       },
       jwt_secret,
       {
-        expiresIn: 5,
+        expiresIn: "1d",
       }
     );
 
@@ -94,8 +115,62 @@ const userLogin = async (req, res) => {
     // console.log(result)
   });
 };
+// user logout
+
+// const logout = async (res,res) =>{
+//   const token = req.headers.authorization
+
+// }
 
 //get all users
-const getAlluser = () => {};
+const getAlluser = async (req, res) => {
+  //find users / select * from users
+  await User.find()
+    .populate("type")
+    .exec((err, result) => {
+      if (err) {
+        console.log(err)
+        return res.status(400).json({
+          message: "not found",
+          data: err
+        });
+      }
+      return res.status(200).json({
+        message: "success",
+        data: {
+          Total: result?.length,
+          users: result,
+        },
+      });
+    });
+  
+
+    
+};
+//get user by filter
+const getUser = async (req, res) => {
+  const query = {
+    user: req.body.id,
+    firstName: req.body.firstName
+  };
+
+  //find users / select * from users
+  await User.find(query).exec((err, result) => {
+    if (err) {
+      return res.status(404).json({
+        message: "not found",
+      });
+    }
+    return res.status(200).json({
+      message: "success",
+      data: {
+        Total: result?.length,
+        users: result,
+      },
+    });
+  });
+};
 
 module.exports = { InsertUser, userLogin, getAlluser };
+
+//eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJRRk5TMDA0Mi4yMCIsImlhdCI6MTY2MjM3OTQ2MywiZXhwIjoxNjYyMzgzMDYzfQ.KrFUPfcY77GnUxVq3NOSzqmbBtmOJOCwWO8k9Qj4LUk
