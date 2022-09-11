@@ -74,6 +74,8 @@ const userLogin = async (req, res) => {
   const userId = req.body.userId;
   const password = req.body.password;
   const role = req.body.role;
+
+  console.log(req.body)
   // check if  user valid
   await User.find({
     userId: userId,
@@ -81,19 +83,19 @@ const userLogin = async (req, res) => {
     if (err) {
       console.log(err);
       return res.status(400).json({
+        status: 200,
         message: "username is not correct",
       });
     }
     // check if user password is correct
     console.log("===>", user);
-    const userPassword = user[0].password;
+    const userPassword = user[0]?.password;
     const isPasswordCorrect = bcrypt.compareSync(password, userPassword);
     if (!isPasswordCorrect) {
       // console.log("password correct");
       return res.status(404).json({
         message: "user password is not correct",
         status: 404,
-     
       });
     }
     // use jwt to encode data => token
@@ -108,6 +110,7 @@ const userLogin = async (req, res) => {
     );
 
     return res.status(200).json({
+      status: 200,
       message: "login successfully",
       token: token,
       data: user,
@@ -129,10 +132,10 @@ const getAlluser = async (req, res) => {
     .populate("type")
     .exec((err, result) => {
       if (err) {
-        console.log(err)
+        console.log(err);
         return res.status(400).json({
           message: "not found",
-          data: err
+          data: err,
         });
       }
       return res.status(200).json({
@@ -143,15 +146,12 @@ const getAlluser = async (req, res) => {
         },
       });
     });
-  
-
-    
 };
 //get user by filter
 const getUser = async (req, res) => {
   const query = {
     user: req.body.id,
-    firstName: req.body.firstName
+    firstName: req.body.firstName,
   };
 
   //find users / select * from users
@@ -165,6 +165,7 @@ const getUser = async (req, res) => {
       message: "success",
       data: {
         Total: result?.length,
+
         users: result,
       },
     });

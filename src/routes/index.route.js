@@ -1,4 +1,4 @@
-const userType = require('../controllers/userType.controller')
+const userType = require('../controllers/userType.controller');
 const userController = require('../controllers/user.controller')
 
 const multer = require('multer')
@@ -14,7 +14,12 @@ const verifyToken = require('../middlewares/verifyToken.middleware')
 const route = require('express').Router()
 
 /// userType route
-route.post("/userType/insert", userType.insertUserType);
+route.post("/userType/insert",verifyToken, userType.insertUserType);
+route.get("/user-types", verifyToken, userType.getAlluserType)
+route.delete("/user-types/delete", verifyToken, userType.deleteUserType)
+route.put("/user-types/update", verifyToken, userType.updateUserType)
+
+
 
 
 /// user route
@@ -32,7 +37,7 @@ route.get("/image/",uploadFiles.showImage) // show image
 //     res.send({message: 'success'})
 // } )
 
-route.get("/all-user", verifyToken, userController.getAlluser)
+route.get("/all-user", userController.getAlluser)
 
 
 module.exports = route
