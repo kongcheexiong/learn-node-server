@@ -39,11 +39,18 @@ const insertUserType = async (req, res) => {
 };
 // get all userType
 const getAlluserType = async (req, res) => {
+
+  const totalUserType = await UserType.find().exec()
+
   await UserType.find()
     .sort({ createAt: -1 })
+    .skip(req.params.skip ? parseInt(req.params.skip) : 0)
+    .limit(req.params.limit ? parseInt(req.params.limit) : 30)
     .exec((err, result) => {
       console.log(result);
       return res.status(200).json({
+        total: totalUserType.length,
+
         data: result,
       });
     });

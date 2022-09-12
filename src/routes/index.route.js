@@ -15,7 +15,8 @@ const route = require('express').Router()
 
 /// userType route
 route.post("/userType/insert",verifyToken, userType.insertUserType);
-route.get("/user-types", verifyToken, userType.getAlluserType)
+route.get("/user-types/skip/:skip/limit/:limit", verifyToken, userType.getAlluserType)
+
 route.delete("/user-types/delete", verifyToken, userType.deleteUserType)
 route.put("/user-types/update", verifyToken, userType.updateUserType)
 
