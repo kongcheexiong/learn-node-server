@@ -3,7 +3,7 @@ const userController = require('../controllers/user.controller')
 
 const multer = require('multer')
 //const upload = require('../middlewares/image.middleware')
-const upload = require('../middlewares/image.middleware')
+const upload = require('../middlewares/fileUpload.middleware')
 
 // const uploadImage = require('../middlewares/uploadimage.middleware')
 
@@ -26,9 +26,14 @@ route.put("/user-types/update", verifyToken, userType.updateUserType)
 /// user route
 route.post("/user/insert",upload.single("image"), userController.InsertUser); // upload image & save image name to db
 route.post("/login", userController.userLogin);
+route.get("/all-user",verifyToken, userController.getAlluser)
 
-// route.post("/user/insert",upload.single("image")); 
-// route.post("/user/insert",userController.InsertUser); 
+route.post("/upload/image",upload.single("image")); 
+route.post("/upload/file",upload.single("file")); 
+route.get("/download/file/:file", (req, res) => {
+    res.download(`files/${req.params.file}`);
+});
+
 
 //image route
 //route.post("/upload/images", upload.single("image") ,uploadFiles.uploadFiles) // upload image without save image name to database
@@ -38,7 +43,7 @@ route.get("/image/",uploadFiles.showImage) // show image
 //     res.send({message: 'success'})
 // } )
 
-route.get("/all-user", userController.getAlluser)
+
 
 
 module.exports = route

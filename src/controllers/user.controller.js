@@ -48,7 +48,7 @@ const InsertUser = async (req, res) => {
   }
 };
 //update
-const updateUser = async () => {
+const updateUser = async (req,res) => {
   // const query = {
   //   : req.body.id
   // }
@@ -67,6 +67,21 @@ const updateUser = async () => {
   });
 };
 //delete
+const deleteUser = async (req,res)=>{
+
+  await User.findByIdAndDelete(req.body.id).exec((err,result)=>{
+    if(err){
+      return res.status(400).json({
+        message: `cannot delete for user ${req.body.id}`
+      })
+    }
+     return res.status(200).json({
+      message: "deleted sucessfully",
+      data: result
+    })
+  })
+
+}
 
 // user login
 const userLogin = async (req, res) => {
@@ -129,6 +144,7 @@ const userLogin = async (req, res) => {
 const getAlluser = async (req, res) => {
   //find users / select * from users
   await User.find()
+    .sort({createAt: -1})
     .populate("type")
     .exec((err, result) => {
       if (err) {

@@ -9,6 +9,7 @@ const routes = require("./src/routes/index.route");
 const { json } = require("express");
 const mongoose = require("mongoose");
 const dbConnect = require("./src/db");
+const verifyToken = require("./src/middlewares/verifyToken.middleware");
 const connectDb = dbConnect();
 app.use(cors());
 
