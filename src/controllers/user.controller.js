@@ -1,6 +1,6 @@
 const User = require("../models/user.model");
 const bcrypt = require("bcrypt");
-const salt = process.env.bcrypt_salt_string || 10;
+const salt = process.env.bcrypt_salt || 10;
 const jwt = require("jsonwebtoken");
 
 const jwt_secret = process.env.jwt_secret;
@@ -10,7 +10,7 @@ const InsertUser = async (req, res) => {
   console.log("file===>", req.file);
   console.log("body===>", req.body);
 
-  const hash_password = await bcrypt.hash(req.body.password, salt);
+  const hash_password = await bcrypt.hash(req.body.password, 10);
   try {
     if (req.body) {
       //check if user in database or not
@@ -69,10 +69,10 @@ const updateUser = async (req,res) => {
 //delete
 const deleteUser = async (req,res)=>{
 
-  await User.findByIdAndDelete(req.body.id).exec((err,result)=>{
+  await User.findByIdAndDelete(req.params.id).exec((err,result)=>{
     if(err){
       return res.status(400).json({
-        message: `cannot delete for user ${req.body.id}`
+        message: `cannot delete for user ${req.params.id}`
       })
     }
      return res.status(200).json({
@@ -188,6 +188,6 @@ const getUser = async (req, res) => {
   });
 };
 
-module.exports = { InsertUser, userLogin, getAlluser };
+module.exports = { InsertUser, userLogin, getAlluser, updateUser, deleteUser  };
 
 //eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJRRk5TMDA0Mi4yMCIsImlhdCI6MTY2MjM3OTQ2MywiZXhwIjoxNjYyMzgzMDYzfQ.KrFUPfcY77GnUxVq3NOSzqmbBtmOJOCwWO8k9Qj4LUk
