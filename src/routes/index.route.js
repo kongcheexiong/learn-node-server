@@ -27,8 +27,8 @@ route.put("/user-types/update", verifyToken, userType.updateUserType)
 route.post("/user/insert", upload.single("image"), userController.InsertUser); // upload image & save image name to db
 route.post("/login", userController.userLogin);
 route.get("/all-user",verifyToken, userController.getAlluser)
-route.get("/user/delete/id/:id",verifyToken, userController.deleteUser)
-route.get("/all-user",verifyToken, userController.updateUser)
+route.delete("/user/delete/id/:id",verifyToken, userController.deleteUser)
+route.put("/user/update",upload.single("image"), userController.updateUser)
 // route.get("/all-user",verifyToken, userController.getAlluser)
 /// params, qurey , body
 

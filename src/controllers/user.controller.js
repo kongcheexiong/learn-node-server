@@ -48,40 +48,53 @@ const InsertUser = async (req, res) => {
   }
 };
 //update
-const updateUser = async (req,res) => {
-  // const query = {
-  //   : req.body.id
-  // }
-  await User.findByIdAndUpdate(req.body._id, {
-    firstName: req.body.firstName,
-  }).exec((err, result) => {
+const updateUser = async (req, res) => {
+  const hash_password = await bcrypt.hash(req.body.password, 10);
+  var query = {
+    ...req.body,
+
+    password: hash_password,
+  };
+  if (req.body.old_img) {
+    query = {
+      ...req.body,
+      image: req.body.old_img,
+    };
+  }
+  if (req.file) {
+    query = {
+      ...req.body,
+      image: req.file.filename,
+    };
+  }
+
+  await User.findByIdAndUpdate(req.body._id, query).exec((err, result) => {
+    console.log(query)
     if (err) {
       return res.status(400).json({
         message: "there is an error",
       });
     }
     return res.status(200).json({
-      message: "insert successfully",
+      message: "updated successfully",
       data: result,
     });
   });
 };
 //delete
-const deleteUser = async (req,res)=>{
-
-  await User.findByIdAndDelete(req.params.id).exec((err,result)=>{
-    if(err){
+const deleteUser = async (req, res) => {
+  await User.findByIdAndDelete(req.params.id).exec((err, result) => {
+    if (err) {
       return res.status(400).json({
-        message: `cannot delete for user ${req.params.id}`
-      })
+        message: `cannot delete for user ${req.params.id}`,
+      });
     }
-     return res.status(200).json({
+    return res.status(200).json({
       message: "deleted sucessfully",
-      data: result
-    })
-  })
-
-}
+      data: result,
+    });
+  });
+};
 
 // user login
 const userLogin = async (req, res) => {
@@ -90,7 +103,7 @@ const userLogin = async (req, res) => {
   const password = req.body.password;
   const role = req.body.role;
 
-  console.log(req.body)
+  console.log(req.body);
   // check if  user valid
   await User.find({
     userId: userId,
@@ -144,7 +157,7 @@ const userLogin = async (req, res) => {
 const getAlluser = async (req, res) => {
   //find users / select * from users
   await User.find()
-    .sort({createAt: -1})
+    .sort({ createAt: -1 })
     .populate("type")
     .exec((err, result) => {
       if (err) {
@@ -188,6 +201,6 @@ const getUser = async (req, res) => {
   });
 };
 
-module.exports = { InsertUser, userLogin, getAlluser, updateUser, deleteUser  };
+module.exports = { InsertUser, userLogin, getAlluser, updateUser, deleteUser };
 
 //eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJRRk5TMDA0Mi4yMCIsImlhdCI6MTY2MjM3OTQ2MywiZXhwIjoxNjYyMzgzMDYzfQ.KrFUPfcY77GnUxVq3NOSzqmbBtmOJOCwWO8k9Qj4LUk
