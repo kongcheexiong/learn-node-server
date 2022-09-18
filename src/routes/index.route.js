@@ -29,6 +29,7 @@ route.post("/login", userController.userLogin);
 route.get("/all-user",verifyToken, userController.getAlluser)
 route.delete("/user/delete/id/:id",verifyToken, userController.deleteUser)
 route.put("/user/update",upload.single("image"), userController.updateUser)
+route.get("/user/user-id/:userId", userController.getUser)
 // route.get("/all-user",verifyToken, userController.getAlluser)
 /// params, qurey , body
 

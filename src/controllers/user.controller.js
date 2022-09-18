@@ -49,27 +49,32 @@ const InsertUser = async (req, res) => {
 };
 //update
 const updateUser = async (req, res) => {
-  const hash_password = await bcrypt.hash(req.body.password, 10);
-  var query = {
-    ...req.body,
+  
+  var query = req.body
 
-    password: hash_password,
-  };
+  if(req.body.password){
+    let hash_password = await bcrypt.hash(req.body.password, 10);
+    query = {
+      ...query,
+      password: hash_password,
+    };
+
+  }
   if (req.body.old_img) {
     query = {
-      ...req.body,
+      ...query,
       image: req.body.old_img,
     };
   }
   if (req.file) {
     query = {
-      ...req.body,
+      ...query,
       image: req.file.filename,
     };
   }
 
-  await User.findByIdAndUpdate(req.body._id, query).exec((err, result) => {
-    console.log(query)
+  await User.updateOne({_id: req.body._id}, {"$set": query}).exec((err, result) => {
+    // console.log("update====>",query)
     if (err) {
       return res.status(400).json({
         message: "there is an error",
@@ -156,6 +161,7 @@ const userLogin = async (req, res) => {
 //get all users
 const getAlluser = async (req, res) => {
   //find users / select * from users
+
   await User.find()
     .sort({ createAt: -1 })
     .populate("type")
@@ -179,13 +185,25 @@ const getAlluser = async (req, res) => {
 //get user by filter
 const getUser = async (req, res) => {
   const query = {
-    user: req.body.id,
-    firstName: req.body.firstName,
+    "$or":[
+      {userId: {"$regex": req.params.userId}},
+      {firstName: {"$regex": req.params.userId}},
+    ]
+   
   };
+  // const query = {
+  //   "$text":{
+  //     "$search": req.params.userId
+  //   }
+    
+  // };
+
+  // where userId like req.params.userId
 
   //find users / select * from users
   await User.find(query).exec((err, result) => {
     if (err) {
+      console.log(err)
       return res.status(404).json({
         message: "not found",
       });
@@ -194,13 +212,12 @@ const getUser = async (req, res) => {
       message: "success",
       data: {
         Total: result?.length,
-
         users: result,
       },
     });
   });
 };
 
-module.exports = { InsertUser, userLogin, getAlluser, updateUser, deleteUser };
+module.exports = { InsertUser, userLogin, getAlluser, updateUser, deleteUser,getUser };
 
 //eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJRRk5TMDA0Mi4yMCIsImlhdCI6MTY2MjM3OTQ2MywiZXhwIjoxNjYyMzgzMDYzfQ.KrFUPfcY77GnUxVq3NOSzqmbBtmOJOCwWO8k9Qj4LUk
