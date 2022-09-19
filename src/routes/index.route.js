@@ -40,8 +40,13 @@ route.get("/user/user-id/:userId", userController.getUser)
 // news category route
 route.post("/news-cate/insert", newsCateController.createNewsCate);
 route.get("/news-cate/all", newsCateController.getNewsCate);
-route.put("news-cate/update", newsCateController.updateNewsCate)
-route.delete("news-cate/delete/id/:id", newsCateController.deleteNewsCate)
+route.put("/news-cate/update", newsCateController.updateNewsCate)
+route.delete("/news-cate/delete/id/:id", newsCateController.deleteNewsCate)
+route.post("haha", (req,res)=>{
+    
+    console.log(req.params)
+    return res.send({message: "sdfa"})
+})
 
 //image route
 //route.post("/upload/images", upload.single("image") ,uploadFiles.uploadFiles) // upload image without save image name to database

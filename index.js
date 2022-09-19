@@ -23,8 +23,8 @@ app.use("/api", routes);
 
 const startServer = async () => {
   //connect database
-  await connectDb.connect();
-  await app.listen(port, () => console.log(`server running at ${port}`));
+   connectDb.connect();
+   app.listen(port, () => console.log(`server running at ${port}`));
 };
 // start server
 startServer();
