@@ -13,7 +13,7 @@ const schema = new mongoose.Schema({
   to:{
     type: [Schema.Types.ObjectId],
     ref: "userType"
-  }
+  },
   /// reference form collection userType
   type: {
     type: [Schema.Types.ObjectId],

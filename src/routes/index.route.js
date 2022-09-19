@@ -1,5 +1,6 @@
 const userType = require('../controllers/userType.controller');
 const userController = require('../controllers/user.controller')
+const newsCateController = require("../controllers/news_cate.controller")
 
 const multer = require('multer')
 //const upload = require('../middlewares/image.middleware')
@@ -20,9 +21,6 @@ route.get("/user-types/skip/:skip/limit/:limit", verifyToken, userType.getAlluse
 route.delete("/user-types/delete", verifyToken, userType.deleteUserType)
 route.put("/user-types/update", verifyToken, userType.updateUserType)
 
-
-
-
 /// user route
 route.post("/user/insert", upload.single("image"), userController.InsertUser); // upload image & save image name to db
 route.post("/login", userController.userLogin);
@@ -34,12 +32,16 @@ route.get("/user/user-id/:userId", userController.getUser)
 /// params, qurey , body
 
 
-route.post("/upload/image",upload.single("image")); 
-route.post("/upload/file",upload.single("file")); 
-route.get("/download/file/:file", (req, res) => {
-    res.download(`files/${req.params.file}`);
-});
-
+// route.post("/upload/image",upload.single("image")); 
+// route.post("/upload/file",upload.single("file")); 
+// route.get("/download/file/:file", (req, res) => {
+//     res.download(`files/${req.params.file}`);
+// });
+// news category route
+route.post("/news-cate/insert", newsCateController.createNewsCate);
+route.get("/news-cate/all", newsCateController.getNewsCate);
+route.put("news-cate/update", newsCateController.updateNewsCate)
+route.delete("news-cate/delete/id/:id", newsCateController.deleteNewsCate)
 
 //image route
 //route.post("/upload/images", upload.single("image") ,uploadFiles.uploadFiles) // upload image without save image name to database
