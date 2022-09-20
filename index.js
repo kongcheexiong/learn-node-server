@@ -21,6 +21,7 @@ const port = process.env.PORT || 3000;
 // use route middleware
 app.use("/api", routes);
 
+
 const startServer = async () => {
   //connect database
    connectDb.connect();

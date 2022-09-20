@@ -40,6 +40,7 @@ route.get("/user/user-id/:userId", userController.getUser)
 // news category route
 route.post("/news-cate/insert", newsCateController.createNewsCate);
 route.get("/news-cate/all", newsCateController.getNewsCate);
+route.get("/news-cate/type-name/:type", newsCateController.searchData);
 route.put("/news-cate/update", newsCateController.updateNewsCate)
 route.delete("/news-cate/delete/id/:id", newsCateController.deleteNewsCate)
 

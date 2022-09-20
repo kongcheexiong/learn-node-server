@@ -50,7 +50,6 @@ const getAlluserType = async (req, res) => {
       console.log(result);
       return res.status(200).json({
         total: totalUserType.length,
-
         data: result,
       });
     });

@@ -17,6 +17,7 @@ const createNewsCate = async (req, res) => {
 };
 //update
 const updateNewsCate = async (req, res) => {
+  console.log(req.body);
   await NewsCategory.updateOne(
     { _id: req.body.id },
     {
@@ -45,6 +46,8 @@ const deleteNewsCate = async (req, res) => {
 };
 //get Data
 const getNewsCate = async (req, res) => {
+  
+ 
   await NewsCategory.find().exec((err, result) => {
     if (err) {
       return res.status(400).json({ message: "err" });
@@ -53,9 +56,20 @@ const getNewsCate = async (req, res) => {
   });
 };
 
+
 module.exports = {
   getNewsCate,
   createNewsCate,
   deleteNewsCate,
   updateNewsCate,
+  //search Data
+  searchData: async (req,res)=>{
+    // console.log(req.params)
+    await NewsCategory.find({ typeName: {"$regex": req.params.type} }).exec((err, result) => {
+        if (err) {
+          return res.status(400).json({ message: "err" });
+        }
+        return res.status(200).json({ data: result });
+      });
+  }
 };
