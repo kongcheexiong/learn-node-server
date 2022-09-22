@@ -2,6 +2,16 @@ const News = require("../models/news.model")
 
 //create
 const createNews = async (req,res)=>{
+
+    const news = new News({...req.body, fileName: req.file.filename})
+    await news.save((err, result)=>{
+        if(err){
+            console.log(err)
+            return res.status(400).json({message: "failed to insert"})
+        }
+        return res.status(201).json({message: result})
+
+    })
     
 }
 //update 

@@ -10,12 +10,17 @@ const schema = new mongoose.Schema({
     type: String,
     required: true
   },
-  to:{
+  fileName: {
+    type: String,
+  
+  },
+
+  userType:{
     type: [Schema.Types.ObjectId],
     ref: "userType"
   },
   /// reference form collection userType
-  type: {
+  newsType: {
     type: [Schema.Types.ObjectId],
     ref: "newsType",
   },
