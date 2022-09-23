@@ -18,6 +18,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 // parse application/json
 app.use(bodyParser.json());
 const port = process.env.PORT || 3000;
+
 // use route middleware
 app.use("/api", routes);
 

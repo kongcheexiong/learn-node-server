@@ -1,3 +1,4 @@
+
 const News = require("../models/news.model")
 
 //create
@@ -24,6 +25,20 @@ const deleteNews = async (req,res)=>{
 }
 //retrive
 const getNews = async (req,res)=>{
+
+   await News.find()
+    .populate("userType")
+    .populate("newsType")
+    .sort({createAt: -1})
+    .exec((err, result)=>{
+    if(err){
+        return res.status(404).json({
+            message: "not found"
+        })
+    } 
+    console.log("=======>",result)
+    return res.status(200).json({message: "success",data: result})
+   })
     
 }
 

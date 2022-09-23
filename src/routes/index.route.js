@@ -57,6 +57,7 @@ route.get("/image/",uploadFiles.showImage) // show image
 
 //news route
 route.post("/news/insert/", upload.single("file"), newsController.createNews)
+route.get("/news/all/", newsController.getNews)
 
 
 
