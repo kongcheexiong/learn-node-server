@@ -17,7 +17,20 @@ const createNews = async (req,res)=>{
 }
 //update 
 const updateNews = async (req,res)=>{
+    console.log(req.body, req.file)
+
+    let query = req.body
+    if(req.file) {
+        query = {...query, fileName:  req.file.filename}
+        
+    }
     
+    await News.findOneAndUpdate({_id: req.body.id},{ "$set":query}).exec((err, result)=>{
+        if(err){
+            return res.status(400).json({message: "fail to update"})
+        }
+        return res.status(201).json({data: result})
+    })
 }
 //delete
 const deleteNews = async (req,res)=>{
