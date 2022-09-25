@@ -37,6 +37,7 @@ route.get("/user/user-id/:userId", userController.getUser)
 // route.post("/upload/file",upload.single("file")); 
 route.get("/download/file/", (req, res) => {
     console.log(req.query.file)
+    // res.setHeader({"fileName": req.query.file})
     return res.download(`files/${req.query.file}`);
 });
 // news category route
@@ -45,6 +46,8 @@ route.get("/news-cate/all", newsCateController.getNewsCate);
 route.get("/news-cate/type-name/:type", newsCateController.searchData);
 route.put("/news-cate/update", newsCateController.updateNewsCate)
 route.delete("/news-cate/delete/id/:id", newsCateController.deleteNewsCate)
+
+
 
 
 //image route
@@ -58,7 +61,9 @@ route.get("/image/",uploadFiles.showImage) // show image
 //news route
 route.post("/news/insert/", upload.single("file"), newsController.createNews)
 route.get("/news/all/", newsController.getNews)
+route.delete("/news/delete/", newsController.deleteNews)
 route.put("/news/update/", upload.single("file"), newsController.updateNews)
+route.get("/news/search/title/:title", newsController.searchByfilter);
 
 
 
