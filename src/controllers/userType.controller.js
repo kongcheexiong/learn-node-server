@@ -47,7 +47,7 @@ const getAlluserType = async (req, res) => {
     .skip(req.params.skip ? parseInt(req.params.skip) : 0)
     .limit(req.params.limit ? parseInt(req.params.limit) : 30)
     .exec((err, result) => {
-      console.log(result);
+      // console.log(result);
       return res.status(200).json({
         total: totalUserType.length,
         data: result,

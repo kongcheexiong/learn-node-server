@@ -11,7 +11,8 @@ const upload = require('../middlewares/fileUpload.middleware')
 
 
 const uploadFiles = require('../controllers/image.controller')
-const verifyToken = require('../middlewares/verifyToken.middleware')
+const verifyToken = require('../middlewares/verifyToken.middleware');
+const dashboard = require('../controllers/dashboard');
 
 const route = require('express').Router()
 
@@ -35,11 +36,7 @@ route.get("/user/user-id/:userId", userController.getUser)
 
 // route.post("/upload/image",upload.single("image")); 
 // route.post("/upload/file",upload.single("file")); 
-route.get("/download/file/", (req, res) => {
-    console.log(req.query.file)
-    // res.setHeader({"fileName": req.query.file})
-    return res.download(`files/${req.query.file}`);
-});
+
 // news category route
 route.post("/news-cate/insert", newsCateController.createNewsCate);
 route.get("/news-cate/all", newsCateController.getNewsCate);
@@ -65,7 +62,14 @@ route.delete("/news/delete/", newsController.deleteNews)
 route.put("/news/update/", upload.single("file"), newsController.updateNews)
 route.get("/news/search/title/:title", newsController.searchByfilter);
 
+route.get("/download/file/", (req, res) => {
+    console.log(req.query.file)
+    // res.setHeader({"fileName": req.query.file})
+    return res.download(`files/${req.query.file}`);
+});
 
+// dashborad
+route.get("/dashboard", dashboard.fetchData)
 
 
 module.exports = route
