@@ -61,6 +61,7 @@ route.get("/news/all/", newsController.getNews)
 route.delete("/news/delete/", newsController.deleteNews)
 route.put("/news/update/", upload.single("file"), newsController.updateNews)
 route.get("/news/search/title/:title", newsController.searchByfilter);
+route.get("/news/search/date", newsController.searchByDate);
 
 route.get("/download/file/", (req, res) => {
     console.log(req.query.file)

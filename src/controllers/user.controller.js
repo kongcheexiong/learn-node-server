@@ -49,16 +49,14 @@ const InsertUser = async (req, res) => {
 };
 //update
 const updateUser = async (req, res) => {
-  
-  var query = req.body
+  var query = req.body;
 
-  if(req.body.password){
+  if (req.body.password) {
     let hash_password = await bcrypt.hash(req.body.password, 10);
     query = {
       ...query,
       password: hash_password,
     };
-
   }
   if (req.body.old_img) {
     query = {
@@ -73,18 +71,20 @@ const updateUser = async (req, res) => {
     };
   }
 
-  await User.updateOne({_id: req.body._id}, {"$set": query}).exec((err, result) => {
-    // console.log("update====>",query)
-    if (err) {
-      return res.status(400).json({
-        message: "there is an error",
+  await User.updateOne({ _id: req.body._id }, { $set: query }).exec(
+    (err, result) => {
+      // console.log("update====>",query)
+      if (err) {
+        return res.status(400).json({
+          message: "there is an error",
+        });
+      }
+      return res.status(200).json({
+        message: "updated successfully",
+        data: result,
       });
     }
-    return res.status(200).json({
-      message: "updated successfully",
-      data: result,
-    });
-  });
+  );
 };
 //delete
 const deleteUser = async (req, res) => {
@@ -112,7 +112,8 @@ const userLogin = async (req, res) => {
   // check if  user valid
   await User.find({
     userId: userId,
-  }).exec(async (err, user) => {
+  })
+  .exec(async (err, user) => {
     if (err) {
       console.log(err);
       return res.status(400).json({
@@ -185,17 +186,16 @@ const getAlluser = async (req, res) => {
 //get user by filter
 const getUser = async (req, res) => {
   const query = {
-    "$or":[
-      {userId: {"$regex": req.params.userId}},
-      {firstName: {"$regex": req.params.userId}},
-    ]
-   
+    $or: [
+      { userId: { $regex: req.params.userId } },
+      { firstName: { $regex: req.params.userId } },
+    ],
   };
   // const query = {
   //   "$text":{
   //     "$search": req.params.userId
   //   }
-    
+
   // };
 
   // where userId like req.params.userId
@@ -203,7 +203,7 @@ const getUser = async (req, res) => {
   //find users / select * from users
   await User.find(query).exec((err, result) => {
     if (err) {
-      console.log(err)
+      console.log(err);
       return res.status(404).json({
         message: "not found",
       });
@@ -218,6 +218,13 @@ const getUser = async (req, res) => {
   });
 };
 
-module.exports = { InsertUser, userLogin, getAlluser, updateUser, deleteUser,getUser };
+module.exports = {
+  InsertUser,
+  userLogin,
+  getAlluser,
+  updateUser,
+  deleteUser,
+  getUser,
+};
 
 //eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJRRk5TMDA0Mi4yMCIsImlhdCI6MTY2MjM3OTQ2MywiZXhwIjoxNjYyMzgzMDYzfQ.KrFUPfcY77GnUxVq3NOSzqmbBtmOJOCwWO8k9Qj4LUk

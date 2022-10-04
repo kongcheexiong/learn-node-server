@@ -20,7 +20,7 @@ const updateNews = async (req, res) => {
     query = { ...query, fileName: req.file.filename };
   }
 
-  await News.findOneAndUpdate({ _id: req.body.id }, { "$set": query }).exec(
+  await News.findOneAndUpdate({ _id: req.body.id }, { $set: query }).exec(
     (err, result) => {
       if (err) {
         return res.status(400).json({ message: "fail to update" });
@@ -70,4 +70,20 @@ module.exports = {
   deleteNews,
   updateNews,
   searchByfilter,
+  searchByDate: async (req, res) => {
+    let query = {
+      createAt: req.query.start,
+    };
+
+    const data = await News.find({
+      $and: [
+        { createAt: { $gte: req.query.start } },
+        { createAt: { $lte: req.query.end } },
+      ],
+    })
+      .populate("newsType")
+      .populate("userType");
+
+    return res.status(200).json({ data: data, total: data.length });
+  },
 };
